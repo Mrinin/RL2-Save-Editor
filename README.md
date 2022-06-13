@@ -1,2 +1,1 @@
-# RL2-Save-Editor
-A simple rogue legacy 2 save editor.
+For now, there is only a simple RL2 save editor on this website.
