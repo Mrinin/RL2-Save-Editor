@@ -336,7 +336,7 @@ function set_relic_field(id, value)
 		entry.value = value
 
 		desc.style.display = "flex";
-		desc.innerText = relic_dict[id] + ": "
+		desc.innerText = String(relic_dict[id]).replace("&#39","\'") + ": "
 		desc.id = "relic_desc_" + id
 
 		del.onclick = function() {remove_relic(id)}
