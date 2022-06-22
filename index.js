@@ -8,16 +8,37 @@
 // new display_properties entries and variable passing to set_fields
 // and new download_fields are needed to be added
 
+//// FUTURE ME PROBLEM:
+// FIX OFFSET NOT WORKING WITH NAMES. FUCKER.
 
-const offset_class = 5867;
+
+/*const offset_class = 5867;
 const offset_trait1 = 5969;
 const offset_trait2 = 5982;
 const offset_weapon = 5906;
 const offset_talent = 5932;
-const offset_spell = 5919;
+const offset_spell = 5919;*/
+
+	// 418: Trait 1
+	// 431: Trait 2
+
+	// 317: Class
+	// 356: Weapon
+	// 382: Talent
+	// 369: Spell
+
+const offset_class = 316;
+const offset_trait1 = 418;
+const offset_trait2 = 431;
+const offset_weapon = 355;
+const offset_talent = 381;
+const offset_spell = 368;
 
 let bytes = [];
+let bytes_str;
 let bytes_offset = 0;
+let character_offset = 0
+let relic_offset = 0
 
 let slot_weapon = document.getElementById('slot_weapon');
 let slot_talent = document.getElementById('slot_talent');
@@ -242,6 +263,26 @@ let slots = document.getElementById('slots');
 console.log(slots)
 slots.style.display = "none"
 
+// This is fucked. So appearently, you know how the game shows the relics and traits you did not encounter yet as ???.
+// Yes that is stored in the save file. as a list. Not an array. Meaning, this too, can change the save file length.
+// Instead of relying on offset, we have to find constant values and compare them.
+function find_offsets()
+{
+ 	const relic_lookfor = "6B5F5F4261636B696E674669656C6400000000000400000408080B01010C52656C69634D6F64547970650200000001010952656C696354797065";
+	// 86 offsets AFTER this.
+	const character_lookfor = "4E616D6508497346656D616C65124475706C69636174654E616D65436F756E7409497352657469726564094973566963746F727909436C6173735479706506576561706F6E055370656C6C0654616C656E740854726169744F6E6508547261697454776F0F416E74697175654F6E654F776E65640F416E746971756554776F4F776E65640745796554797065094D6F757468547970650E46616369616C48616972547970650D536B696E436F6C6F72547970650848616972547970650D48616972436F6C6F725479706508426F647954797065114564676545717569706D656E7454797065114361706545717569706D656E745479706512436865737445717569706D656E7454797065114865616445717569706D656E7454797065145472696E6B657445717569706D656E7454797065";
+
+	relic_offset = (bytes_str.indexOf(relic_lookfor) + relic_lookfor.length) / 2
+	character_offset = (bytes_str.indexOf(character_lookfor) + character_lookfor.length) / 2
+	// 418: Trait 1
+	// 431: Trait 2
+
+	// 317: Class
+	// 356: Weapon
+	// 382: Talent
+	// 369: Spell
+}
+
 function set_fields(_class, _trait1, _trait2, _weapon, _talent, _spell) 
 {
 	slots.style.display = "block"
@@ -378,7 +419,7 @@ function insert_relics()
 	for (let i = 0; i < spawned_relics.length; i++) {
 		const id = Number(spawned_relics[i]);
 		const val = dec_to_hex(parseInt(document.getElementById("relic_" + id).value))
-		insert_into_array(id, val)
+		insert_into_array(id + relic_offset, val)
 	}
 }
 
@@ -437,13 +478,21 @@ function doupload() {
 
 	// https://stackoverflow.com/questions/5587973/javascript-upload-file
 
+	bytes_str = ""
 	var fr = new FileReader();
 	fr.addEventListener('load', function () {
 		var u = new Uint8Array(this.result),
-			a = new Array(u.length),
-			i = u.length;
-		while (i--) // map to hex
-			a[i] = (u[i] < 16 ? '0' : '') + u[i].toString(16);
+			a = new Array(u.length)
+			
+		i = 0
+		while (i < u.length) {
+			// map to hex
+			a[i] = (u[i] < 16 ? '0' : '') + u[i].toString(16).toUpperCase();
+			bytes_str = bytes_str + a[i]
+			i++
+			//console.log(a[i])
+		}
+		console.log(a[0])
 		u = null; // free memory
 		console.log(a); // work with this
 		display_properties(a)
@@ -457,6 +506,7 @@ function doupload() {
 
 function display_properties(_bytes)
 {
+
 	let a_gclass = 0
 	let a_trait1 = {}
 	let a_trait2 = {}
@@ -465,16 +515,19 @@ function display_properties(_bytes)
 	let a_spell = {}
 
 	bytes = _bytes
-	bytes_offset = -(50070 - bytes.length)
+	find_offsets()
+
+	console.log(character_offset)
+	console.log(offset_class)
 
 	// This gets the hex of the fields. these are hardcoded.
 
-	a_gclass = bytes[offset_class + bytes_offset]
-	a_trait1 = bytes.slice(offset_trait1 + bytes_offset, offset_trait1 + bytes_offset + 4)
-	a_trait2 = bytes.slice(offset_trait2 + bytes_offset, offset_trait2 + bytes_offset + 4)
-	a_weapon = bytes.slice(offset_weapon + bytes_offset, offset_weapon  + bytes_offset+ 4)
-	a_talent = bytes.slice(offset_talent + bytes_offset, offset_talent + bytes_offset + 4)
-	a_spell = bytes.slice(offset_spell + bytes_offset, offset_spell + bytes_offset + 4)
+	a_gclass = bytes[offset_class + character_offset]
+	a_trait1 = bytes.slice(offset_trait1 + character_offset, offset_trait1 + character_offset + 4)
+	a_trait2 = bytes.slice(offset_trait2 + character_offset, offset_trait2 + character_offset + 4)
+	a_weapon = bytes.slice(offset_weapon + character_offset, offset_weapon  + character_offset+ 4)
+	a_talent = bytes.slice(offset_talent + character_offset, offset_talent + character_offset + 4)
+	a_spell = bytes.slice(offset_spell + character_offset, offset_spell + character_offset + 4)
 
 	/*trait1 = trait_dict[bytes[5969 + offset]]
 	trait2 = trait_dict[bytes[5982 + offset]]
@@ -534,12 +587,12 @@ function download()
 	let _talent = slot_talent.value;
 	let _spell = slot_spell.value;
 
-	insert_into_array(offset_class, _class)
-	insert_into_array(offset_trait1, _trait1)
-	insert_into_array(offset_trait2, _trait2)
-	insert_into_array(offset_weapon, _weapon)
-	insert_into_array(offset_talent, _talent)
-	insert_into_array(offset_spell, _spell)
+	insert_into_array(offset_class + character_offset, _class)
+	insert_into_array(offset_trait1 + character_offset, _trait1)
+	insert_into_array(offset_trait2 + character_offset, _trait2)
+	insert_into_array(offset_weapon + character_offset, _weapon)
+	insert_into_array(offset_talent + character_offset, _talent)
+	insert_into_array(offset_spell + character_offset, _spell)
 
 	insert_relics()
 
@@ -607,10 +660,11 @@ function littleEndianHexStringToDecimal(string)
     return parseInt(bigEndianHexString);
 }
 
-function make_list(number)
+// This converts string hex to string int "01020304" => ["01","02","03","04"]
+function make_list(string)
 {
-	list = []
-	
+	list = string.match(/.{1,3}/g)
+	return list
 }
 
 function join_list(list)
@@ -636,7 +690,7 @@ function insert_into_array(offset, value)
 	// https://stackoverflow.com/questions/6259515/how-can-i-split-a-string-into-segments-of-n-characters
 	// "bytes_offset" is the offset determined by the length of player character's name.
 	var array = value.match(/.{1,2}/g);
-	var index = offset + bytes_offset;
+	var index = offset;
 	bytes.splice(index, array.length, ...array)
 	//console.log("11");
 	//bytes.splice.apply(bytes, [index, array.length].concat(array));
