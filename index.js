@@ -27,18 +27,20 @@ const offset_spell = 5919;*/
 	// 382: Talent
 	// 369: Spell
 
-const offset_class = 316;
-const offset_trait1 = 418;
-const offset_trait2 = 431;
-const offset_weapon = 355;
-const offset_talent = 381;
-const offset_spell = 368;
+const offset_class = 6;
+const offset_trait1 = 108;
+const offset_trait2 = 121;
+const offset_weapon = 45;
+const offset_talent = 71;
+const offset_spell = 58;
 
 let bytes = [];
 let bytes_str;
-let bytes_offset = 0;
+//let bytes_offset = 0;
 let character_offset = 0
 let relic_offset = 0
+
+let presets = document.getElementById('presets');
 
 let slot_weapon = document.getElementById('slot_weapon');
 let slot_talent = document.getElementById('slot_talent');
@@ -105,7 +107,19 @@ const trait_dict = {
 	"0E010000": "Superfluid",
 	"8C000000": "Muscle Weakness",
 	"E6000000": "IIB Muscle Fibers",
-	"04010000": "Aerodynamic"
+	"04010000": "Aerodynamic",
+
+	"55010000": "FMF Fan",
+	"B6030000": "Paranoid",
+	"C0030000": "Exploding Casket Syndrome",
+	"7A030000": "Hypercoagulation",
+	"D6010000": "Hollow Bones",
+	"DE030000": "Contrarian",
+	"CC010000": "Puritan",
+	"E4020000": "Super IBS",
+	"FE010000": "Panic Attacks",
+
+	"CE010000": "Dissociative Agnosia"
 }
 
 var weapon_dict_reverse;
@@ -168,88 +182,88 @@ const item_dict = {
 }
 
 const relic_dict = {
-	"44739": "Hyperion&#39s Broken Ring",
-	"44790": "Aether&#39s Wings ",
-	"44841": "Serrated Handle&#39 Bargain",
-	"44892": "Future Successor&#39s Bargain",
-	"44943": "Ambrosia (OLD)",
-	"44994": "Fate&#39s Die",
-	"45045": "Coeus&#39 Shell (OLD)",
-	"45096": "Glowing Ember",
-	"45147": "Ivy Seed",
-	"45198": "Freon&#39s Reward",
-	"45249": "Gnawed Bone",
-	"45300": "MEAT CHANCE UP",
-	"45351": "Ambrosia",
-	"45402": "Rage Tincture",
-	"45453": "Catalyst",
-	"45504": "DAMAGE REDUCTION STATUS EFFECT",
-	"45555": "The Heavy Stone Bargain",
-	"45606": "War Drum",
-	"45657": "Ameterasu&#39s Sun",
-	"45708": "SPELL BURN ADD_1",
-	"45759": "SPELLS DAMAGE CLOUD",
-	"45810": "Body Buffet",
-	"45861": "Lily of the Valley 1",
-	"45912": "Lily of the Valley 2",
-	"45963": "Lily of the Valley 3",
-	"46014": "Hermes Boots",
-	"46065": "Lotus Petal",
-	"46116": "Steel Toed Boots",
-	"46167": "Diogenes Bargain",
-	"46218": "Cosmic Insight",
-	"46269": "Antikythera",
-	"46320": "Skeleton Key",
-	"46371": "Broken Key",
-	"46422": "Vanguard Banner",
-	"46473": "Pandora&#39s Trial",
-	"46524": "Pandora&#39s Reward",
-	"46575": "Lachesis&#39 Measure",
-	"46626": "Atropos Scissors",
-	"46677": "Clotho&#39s Spindle",
-	"46728": "Blessing of Strength",
-	"46779": "Blessing of Wisdom",
-	"46830": "Blessing of Talent",
-	"46881": "Zealot&#39s Ring",
-	"46932": "Weird Mushrooms",
-	"46983": "Grave Bell",
-	"47034": "GOLD INTO RESOLVE ",
-	"47085": "Incandescent Telescope (OLD)",
-	"47136": "Boxing Bell",
-	"47187": "Achilles&#39 Shield",
-	"47238": "Hector&#39s Helm",
-	"47289": "Coeus&#39 Shield",
-	"47340": "Empty Vessel",
-	"47391": "Lotus Stem",
-	"47442": "Charon&#39s Trial",
-	"47493": "Charon&#39s Reward",
-	"47544": "Nothing??? (Ancestral Soul?)",
-	"47595": "Ancestral Dust",
-	"47646": "Cornucopia",
-	"47697": "Obelisk",
-	"47748": "Dream Catcher",
-	"47799": "The Heavy Stone Bargain (OLD)",
-	"47850": "Serqet&#39s Stinger",
-	"47901": "Onyx Key",
-	"47952": "Pearl Key",
-	"48003": "Raven&#39s Ring",
-	"48054": "Heron&#39s Ring",
-	"48105": "Soul Tether",
-	"48156": "Ivy Roots",
-	"48207": "Corrupting Reagent",
-	"48258": "Lamech&#39s Whetstone",
-	"48309": "Incandescent Telescope	",
-	"48360": "Caltrops (Removed in EA)",
-	"48411": "The Icarus&#39 Wings Bargain",
-	"48462": "Voltaic Circlet",
-	"48513": "Marble Statue",
-	"48564": "Demeter&#39s Trial",
-	"48615": "Demeter&#39s Reward",
-	"48666": "Arcane Necklace",
-	"48717": "Red Sand Hourglass",
-	"48768": "Aite&#39s Sword",
-	"48819": "Aite&#39s Broken Sword",
-	"48870": "Weighted Anklet"
+	"51":	  "Hyperion&#39s Broken Ring",
+	"102":    "Aether&#39s Wings ",
+	"153":    "Serrated Handle&#39 Bargain",
+	"204":    "Future Successor&#39s Bargain",
+	"255":    "Ambrosia (OLD)",
+	"306":    "Fate&#39s Die",
+	"357":    "Coeus&#39 Shell (OLD)",
+	"408":    "Glowing Ember",
+	"459":    "Ivy Seed",
+	"510":    "Freon&#39s Reward",
+	"561":    "Gnawed Bone",
+	"612":    "MEAT CHANCE UP",
+	"663":    "Ambrosia",
+	"714":    "Rage Tincture",
+	"765":    "Catalyst",
+	"816":    "DAMAGE REDUCTION STATUS EFFECT",
+	"867":    "The Heavy Stone Bargain",
+	"918":    "War Drum",
+	"969":    "Ameterasu&#39s Sun",
+	"1020":    "SPELL BURN ADD_1",
+	"1071":    "SPELLS DAMAGE CLOUD",
+	"1122":    "Body Buffet",
+	"1173":    "Lily of the Valley 1",
+	"1224":    "Lily of the Valley 2",
+	"1275":    "Lily of the Valley 3",
+	"1326":    "Hermes Boots",
+	"1377":    "Lotus Petal",
+	"1428":    "Steel Toed Boots",
+	"1479":    "Diogenes Bargain",
+	"1530":    "Cosmic Insight",
+	"1581":    "Antikythera",
+	"1632":    "Skeleton Key",
+	"1683":    "Broken Key",
+	"1734":    "Vanguard Banner",
+	"1785":    "Pandora&#39s Trial",
+	"1836":    "Pandora&#39s Reward",
+	"1887":    "Lachesis&#39 Measure",
+	"1938":    "Atropos Scissors",
+	"1989":    "Clotho&#39s Spindle",
+	"2040":    "Blessing of Strength",
+	"2091":    "Blessing of Wisdom",
+	"2142":    "Blessing of Talent",
+	"2193":    "Zealot&#39s Ring",
+	"2244":    "Weird Mushrooms",
+	"2295":    "Grave Bell",
+	"2346":    "GOLD INTO RESOLVE ",
+	"2397":    "Incandescent Telescope (OLD)",
+	"2448":    "Boxing Bell",
+	"2499":    "Achilles&#39 Shield",
+	"2550":    "Hector&#39s Helm",
+	"2601":    "Coeus&#39 Shield",
+	"2652":    "Empty Vessel",
+	"2703":    "Lotus Stem",
+	"2754":    "Charon&#39s Trial",
+	"2805":    "Charon&#39s Reward",
+	"2856":    "Nothing??? (Ancestral Soul?)",
+	"2907":    "Ancestral Dust",
+	"2958":    "Cornucopia",
+	"3009":    "Obelisk",
+	"3060":    "Dream Catcher",
+	"3111":    "The Heavy Stone Bargain (OLD)",
+	"3162":    "Serqet&#39s Stinger",
+	"3213":    "Onyx Key",
+	"3264":    "Pearl Key",
+	"3315":    "Raven&#39s Ring",
+	"3366":    "Heron&#39s Ring",
+	"3417":    "Soul Tether",
+	"3468":    "Ivy Roots",
+	"3519":    "Corrupting Reagent",
+	"3570":    "Lamech&#39s Whetstone",
+	"3621":    "Incandescent Telescope	",
+	"3672":    "Caltrops (Removed in EA)",
+	"3723":    "The Icarus&#39 Wings Bargain",
+	"3774":    "Voltaic Circlet",
+	"3825":    "Marble Statue",
+	"3876":    "Demeter&#39s Trial",
+	"3927":    "Demeter&#39s Reward",
+	"3978":    "Arcane Necklace",
+	"4029":    "Red Sand Hourglass",
+	"4080":    "Aite&#39s Sword",
+	"4131":    "Aite&#39s Broken Sword",
+	"4182":    "Weighted Anklet"
 }
 
 let spawned_relics = []
@@ -263,16 +277,127 @@ let slots = document.getElementById('slots');
 console.log(slots)
 slots.style.display = "none"
 
+function change_to_preset()
+{
+	preset = presets.value
+
+	if(preset == 1)
+	{
+		slot_class.value = "1E";
+		slot_trait1.value = "54010000";
+		slot_trait2.value = "57010000";
+		slot_weapon.value = "BB000000";
+		slot_talent.value = "B8000000";
+		slot_spell.value  = "A0000000";
+	}
+
+	if(preset == 2)
+	{
+		slot_class.value = "14";
+		slot_trait1.value = "0E010000";
+		slot_trait2.value = "00000000";
+		slot_weapon.value = "54010000";
+		slot_talent.value = "22010000";
+		slot_spell.value  = "58010000";
+	}
+
+	if(preset == 3)
+	{
+		slot_class.value = "A0";
+		slot_trait1.value = "98030000";
+		slot_trait2.value = "22010000";
+		slot_weapon.value = "1E000000";
+		slot_talent.value = "3C000000";
+		slot_spell.value  = "50000000";
+	}
+	// Sword Shield Pizza
+	if(preset == 4)
+	{
+		slot_class.value = "0A";
+
+		slot_weapon.value = "14000000";
+		slot_talent.value = "C8000000";
+		slot_spell.value  = "3E000000";
+	}
+
+	// Lute HAHA Guitar
+	if(preset == 5)
+	{
+		slot_class.value = "C8";
+
+		slot_weapon.value = "7F000000";
+		slot_talent.value = "31010000";
+		slot_spell.value  = "35000000";
+	}
+
+	// Bow Ivy Bow
+	if(preset == 6)
+	{
+		slot_class.value = "5A";
+
+		slot_weapon.value = "32000000";
+		slot_talent.value = "F0000000";
+		slot_spell.value  = "37000000";
+	}
+
+	// hammer barb
+	if(preset == 7)
+	{
+		slot_class.value = "14";
+
+		slot_weapon.value = "28000000";
+		slot_talent.value = "D2000000";
+		slot_spell.value  = "29000000";
+	}
+
+	
+	// glove boxer
+	if(preset == 8)
+	{
+		slot_class.value = "96";
+
+		slot_weapon.value = "44000000";
+		slot_talent.value = "54010000";
+		slot_spell.value  = "7E000000";
+	}
+
+	// double staff mage
+	if(preset == 9)
+	{
+		slot_class.value = "1E";
+
+		slot_weapon.value = "46000000";
+		//slot_talent.value = "54010000";
+		slot_spell.value  = "7A000000";
+	}
+
+	if(preset == 10)
+	{
+		slot_class.value = "32";
+		slot_trait1.value = "BE000000";
+		slot_trait2.value = "D2000000";
+		slot_weapon.value = "5A000000";
+		slot_talent.value = "22010000";
+		slot_spell.value  = "BD000000";
+	}
+}
+
 // This is fucked. So appearently, you know how the game shows the relics and traits you did not encounter yet as ???.
 // Yes that is stored in the save file. as a list. Not an array. Meaning, this too, can change the save file length.
 // Instead of relying on offset, we have to find constant values and compare them.
 function find_offsets()
 {
  	const relic_lookfor = "6B5F5F4261636B696E674669656C6400000000000400000408080B01010C52656C69634D6F64547970650200000001010952656C696354797065";
+	// This is right AFTER the name, 5822
+	//const relic_lookfor = ""
+	 						
 	// 86 offsets AFTER this.
-	const character_lookfor = "4E616D6508497346656D616C65124475706C69636174654E616D65436F756E7409497352657469726564094973566963746F727909436C6173735479706506576561706F6E055370656C6C0654616C656E740854726169744F6E6508547261697454776F0F416E74697175654F6E654F776E65640F416E746971756554776F4F776E65640745796554797065094D6F757468547970650E46616369616C48616972547970650D536B696E436F6C6F72547970650848616972547970650D48616972436F6C6F725479706508426F647954797065114564676545717569706D656E7454797065114361706545717569706D656E745479706512436865737445717569706D656E7454797065114865616445717569706D656E7454797065145472696E6B657445717569706D656E7454797065";
+    //const character_lookfor = "4E616D6508497346656D616C65124475706C69636174654E616D65436F756E7409497352657469726564094973566963746F727909436C6173735479706506576561706F6E055370656C6C0654616C656E740854726169744F6E6508547261697454776F0F416E74697175654F6E654F776E65640F416E746971756554776F4F776E65640745796554797065094D6F757468547970650E46616369616C48616972547970650D536B696E436F6C6F72547970650848616972547970650D48616972436F6C6F725479706508426F647954797065114564676545717569706D656E7454797065114361706545717569706D656E745479706512436865737445717569706D656E7454797065114865616445717569706D656E7454797065145472696E6B657445717569706D656E7454797065";
+	const character_lookfor = "436C61737354797065010000000776616C75655F5F"
 
-	relic_offset = (bytes_str.indexOf(relic_lookfor) + relic_lookfor.length) / 2
+	relic_offset = (bytes_str.indexOf(relic_lookfor) + relic_lookfor.length) / 2 + 35
+	console.log(relic_offset)
+
 	character_offset = (bytes_str.indexOf(character_lookfor) + character_lookfor.length) / 2
 	// 418: Trait 1
 	// 431: Trait 2
@@ -360,7 +485,8 @@ function set_relic_fields(relics)
 	}
 }
 
-// Creates a relic field for the HTML list. Does not create, and instead updates the field if the field already exists.
+// Creates a relic field for the HTML list. If the relic is already there,
+//does not create, and instead updates the field if the field already exists.
 function set_relic_field(id, value)
 {
 	if(spawned_relics.includes(id)){
@@ -410,16 +536,18 @@ function insert_relics()
 {
 	for (let i = 0; i < relic_list.length; i++) {
 		const element = Number(relic_list[i]);
-		bytes[element + bytes_offset] = "00"
-		bytes[element + bytes_offset + 1] = "00"
-		bytes[element + bytes_offset + 2] = "00"
-		bytes[element + bytes_offset + 3] = "00"
+		bytes[element + relic_offset + 0] = "00"
+		bytes[element + relic_offset  + 1] = "00"
+		bytes[element + relic_offset  + 2] = "00"
+		bytes[element + relic_offset  + 3] = "00"
 	}
 
 	for (let i = 0; i < spawned_relics.length; i++) {
 		const id = Number(spawned_relics[i]);
 		const val = dec_to_hex(parseInt(document.getElementById("relic_" + id).value))
-		insert_into_array(id + relic_offset, val)
+		console.log(relic_offset)
+		console.log(id)
+		insert_into_array(relic_offset + id, val)
 	}
 }
 
@@ -589,12 +717,15 @@ function download()
 
 	insert_into_array(offset_class + character_offset, _class)
 	insert_into_array(offset_trait1 + character_offset, _trait1)
+	console.log("not here")
 	insert_into_array(offset_trait2 + character_offset, _trait2)
 	insert_into_array(offset_weapon + character_offset, _weapon)
 	insert_into_array(offset_talent + character_offset, _talent)
 	insert_into_array(offset_spell + character_offset, _spell)
 
+	console.log("not heree")
 	insert_relics()
+	console.log,("not hereee")
 
 	console.log(bytes)
 	let bytes1 = convert_to_uint_array(bytes);
@@ -624,7 +755,7 @@ function download_file(filename, text) {
 	element.click();
   
 	document.body.removeChild(element);
-  }
+}
 
 function get_relic_list()
 {
@@ -633,7 +764,7 @@ function get_relic_list()
 	for (let i = 0; i < relic_list.length; i++) {
 		const element = Number(relic_list[i]);
 		// this... gets the the count of a relic and then converts that to dec.
-		const count = littleEndianHexStringToDecimal(join_list(bytes.slice(element + bytes_offset, element + bytes_offset + 4)));
+		const count = littleEndianHexStringToDecimal(join_list(bytes.slice(element + relic_offset, element + relic_offset + 4)));
 	
 		if (count != 0)
 		{

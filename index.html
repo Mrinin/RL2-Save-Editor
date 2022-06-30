@@ -24,6 +24,22 @@
 	<button onclick="doupload()" name="submit">Upload File</button>
 	<br> <br>
 	<div id="slots" style="display:none">
+		Recommended Presets <br>
+		<select id="presets" onchange="change_to_preset()"> 
+			<option value=0> Click here to change to a preset </option>
+			<option value=1> Archmage (3 spells)</option>
+			<option value=2> Talent Master (3 talents)</option>
+			<option value=3> Spellsword (3 weapons)</option>
+
+			<option value=4> Double Pizza Knight </option>
+			<option value=5> Double Guitar Bard </option>
+			<option value=6> Double Bow Ranger </option>
+			<option value=7> Double Hammer Barbarian </option>
+			<option value=8> Double Gloves Boxer </option>
+			<option value=9> Double Staff Mage </option>
+
+			<option value=10> 1 HP & Pacifist </option>
+		</select> <br>
 		Class <br>
 		<select id="slot_class"> </select> <br>
 		Trait 1 <br>
@@ -36,7 +52,9 @@
 		<select id="slot_talent"> </select><br>
 		Spell (3rd slot) <br>
 		<select id="slot_spell"> </select> <br>
+		Note: Adding or changing relics will not work correctly if your save file did not discover every relic.<br>
 		Add Relic<br>
+
 		<select id="slot_addrelic" onchange="add_relic()"> </select> <br>
 		<div id="slot_relics"></div>
 		
@@ -46,3 +64,4 @@
 	<script src="index.js"></script>
 </body>
 <body>
+
