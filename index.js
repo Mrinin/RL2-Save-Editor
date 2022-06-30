@@ -103,7 +103,6 @@ const trait_dict = {
 	"57010000": "Emotional Dysregularity",
 	"08020000": "Synthesis",
 	"5C030000": "Dyspraxia",
-	"0E010000": "Superfluid",
 	"8C000000": "Muscle Weakness",
 	"E6000000": "IIB Muscle Fibers",
 	"04010000": "Aerodynamic",
@@ -118,7 +117,8 @@ const trait_dict = {
 	"E4020000": "Super IBS",
 	"FE010000": "Panic Attacks",
 
-	"CE010000": "Dissociative Agnosia"
+	"CE010000": "Dissociative Agnosia",
+	"DC000000": "Superfluid"
 }
 
 var weapon_dict_reverse;
@@ -295,7 +295,7 @@ function change_to_preset()
 		slot_class.value = "14";
 		slot_trait1.value = "0E010000";
 		slot_trait2.value = "00000000";
-		slot_weapon.value = "54010000";
+		slot_weapon.value = "26010000";
 		slot_talent.value = "22010000";
 		slot_spell.value  = "58010000";
 	}
