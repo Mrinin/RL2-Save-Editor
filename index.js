@@ -8,8 +8,7 @@
 // new display_properties entries and variable passing to set_fields
 // and new download_fields are needed to be added
 
-//// FUTURE ME PROBLEM:
-// FIX OFFSET NOT WORKING WITH NAMES. FUCKER.
+// Re-comitting so github pages updates.
 
 
 /*const offset_class = 5867;
